@@ -1,2 +1,4 @@
-# OptionAnalyzer
-Tool to analysis financial options
+# *Option Analysis by PITON Thomas and GOV Kévin*
+
+## **Guidelines**
+
