@@ -1,6 +1,8 @@
 from api.cboe.cboe import CboeApi
 from api.barchart.barchart import BarchartApi
 from api.euronext.euronext import EuronextApi
+from api.nasdaq.nasdaq import NasdaqApi
+from api.eurex.eurex import EurexApi
 
 def run_cboe_extracts():
     """ 
@@ -32,7 +34,7 @@ def run_barchart_extracts():
     # Initialize
     barchart = BarchartApi()
     # Test all functions by default
-    barchart.get_option()
+    barchart.get_option_quotes()
 
 def run_euronext_extracts():
     """ 
@@ -41,7 +43,25 @@ def run_euronext_extracts():
     # Initialize
     euronext = EuronextApi()
     # Test all functions by default
-    euronext.get_option_quotes(ticker="META")
+    euronext.get_option_quotes()
+    
+def run_nasdaq_extracts():
+    """ 
+    will test each extract
+    """
+    # Initialize
+    nasdaq = NasdaqApi()
+    # Test all functions by default
+    nasdaq.get_option_quotes()
+    
+def run_eurex_extracts():
+    """ 
+    will test each extract
+    """
+    # Initialize
+    eurex = EurexApi()
+    # Test all functions by default
+    eurex.get_all_tickers()
     
 if __name__ == '__main__':
-    run_cboe_extracts()
+    run_barchart_extracts()

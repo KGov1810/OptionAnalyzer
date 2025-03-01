@@ -1,3 +1,1 @@
-
-
 DEFAULT_HEADERS = {}
