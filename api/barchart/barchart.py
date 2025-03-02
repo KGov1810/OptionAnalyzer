@@ -96,7 +96,7 @@ class BarchartApi(BaseExtractor):
         """
         super().__init__()
         
-    def get_option_quotes(self, ticker="AAPL"):
+    def get_option_quotes(self, ticker="AAPL",frequency="weekly"):
         """
         Retrieve options quotes data for a specific ticker symbol.
         
@@ -105,6 +105,7 @@ class BarchartApi(BaseExtractor):
         
         Args:
             ticker (str): Stock ticker symbol (default: "AAPL")
+            frequency (str) : either monthly or weekly
             
         Returns:
             pandas.DataFrame: DataFrame containing options data with the following columns:
@@ -138,17 +139,44 @@ class BarchartApi(BaseExtractor):
         """
         url = 'https://www.barchart.com/proxies/core-api/v1/options/get'
         
-        params = {
-            'fields': 'symbol,baseSymbol,strikePrice,lastPrice,theoretical,volatility,delta,gamma,theta,vega,rho,volume,openInterest,volumeOpenInterestRatio,optionType,daysToExpiration,expirationDate,tradeTime,averageVolatility,historicVolatility30d,baseNextEarningsDate',
-            "baseSymbol": ticker,
-            "groupBy": "optionType",
-            "expirationDate": "",
-            "meta": "field.shortName,expirations",
-            "orderBy": "strikePrice",
-            "orderDir": "asc",
-            "limit": 10000
+        params={
+            'fields': 'symbol,baseSymbol,strikePrice,expirationDate,moneyness,bidPrice,midpoint,askPrice,lastPrice,priceChange,percentChange,volume,openInterest,openInterestChange,delta,volatility,optionType,daysToExpiration,expirationDate,tradeTime,averageVolatility,historicVolatility30d,baseNextEarningsDate,dividendExDate,baseTimeCode,expirationType,impliedVolatilityRank1y,symbolCode,symbolType',
+            "baseSymbol": str(ticker),
+            "groupBy":"optionType",
+            "expirationDate":"",
+            "meta":"field.shortName,expirations,field.description",
+            "orderBy":"strikePrice",
+            "orderDir":"asc",
+            "optionsOverview": "true",
+            "expirationType": frequency,
+            "raw" : "10000"
         }
         
         response = self._make_request(url, params)
-        df = pd.DataFrame(response['data'])
+        df_call = pd.DataFrame(response['data']['Call'])
+        df_put = pd.DataFrame(response['data']['Put'])
+        df = pd.concat([df_call, df_put], axis=0)
+        df['ExtractTime'] = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
         return df
+    
+    def get_advanced_option_quotes(
+        self, 
+        orderBy:str="baseSymbol",
+        orderDir:str="asc",
+        fields:str="symbol",
+        page:int=None,
+        limit:int=None,
+        hasOptions:str="true",
+        raw:int=None,
+        meta:str="field.shortName",
+        symbol_type:str="in(symbolType,(call,put))",
+        daysToExpiration:str="between(daysToExpiration,,60)", 
+        expirationType:str="in(expirationType,(monthly))",
+        baseSymbolType:str="in(baseSymbolType,(1))", 
+        volume:str="between(volume,100,)", 
+        openInterest:str="between(openInterest,500,)", 
+        moneyness:str="between(moneyness,-25,-5)" ,
+        period:str="ge(tradeTime,previousTradingDay)",
+        isAdjusted:str="ne(isAdjusted,1)"):
+
+        pass

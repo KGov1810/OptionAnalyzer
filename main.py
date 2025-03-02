@@ -3,6 +3,7 @@ from api.barchart.barchart import BarchartApi
 from api.euronext.euronext import EuronextApi
 from api.nasdaq.nasdaq import NasdaqApi
 from api.eurex.eurex import EurexApi
+from api.nse.nse import NseApi
 
 def run_cboe_extracts():
     """ 
@@ -62,6 +63,15 @@ def run_eurex_extracts():
     eurex = EurexApi()
     # Test all functions by default
     eurex.get_all_tickers()
+    
+def run_nse_extracts():
+    """ 
+    will test each extract
+    """
+    # Initialize
+    nse = NseApi()
+    # Test all functions by default
+    nse.get_option_quotes()
     
 if __name__ == '__main__':
     run_barchart_extracts()
