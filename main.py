@@ -4,6 +4,8 @@ from api.euronext.euronext import EuronextApi
 from api.nasdaq.nasdaq import NasdaqApi
 from api.eurex.eurex import EurexApi
 from api.nse.nse import NseApi
+from api.cme.cme import CmeApi
+from api.leonteq.leonteq import LeonteqApi
 
 def run_cboe_extracts():
     """ 
@@ -73,5 +75,25 @@ def run_nse_extracts():
     # Test all functions by default
     nse.get_option_quotes()
     
+def run_cme_extracts():
+    """ 
+    will test each extract
+    """
+    # Initialize
+    cme = CmeApi()
+    # Test all functions by default
+    cme.get_option_quotes()
+
+def run_leonteq_extracts():
+    """ 
+    will test each extract
+    """
+    # Initialize
+    leonteq = LeonteqApi()
+    # Test all functions by default
+    # result = leonteq.get_product_detail()
+    # result = leonteq.get_product_timeseries()
+    result = leonteq.search_products()
+
 if __name__ == '__main__':
-    run_barchart_extracts()
+    run_leonteq_extracts()

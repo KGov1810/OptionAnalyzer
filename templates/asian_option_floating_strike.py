@@ -51,13 +51,14 @@ class OptionAsianFloatingStrike:
         
         :return: The payoff value.
         """
-        strike = self.calculate_floating_strike()
+        floating_strike = self.calculate_floating_strike()
         spot_final = self.prices[-1]  # Last spot price
-        return max(spot_final - strike, 0)
+        return max(spot_final - floating_strike, 0)
 
 # Example usage
 prices = [100, 102, 101, 103, 105, 107, 106, 108, 110, 109]
-option = OptionAsianFloatingStrike(prices, window=30, avg_type='ema')
+option = OptionAsianFloatingStrike(prices, window=30, avg_type='median')
 print("Payoff:", option.payoff())
+
 
 
