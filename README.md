@@ -17,7 +17,7 @@ Here is the streamlit app link to the Option Analysis. (<ins>**This is not a dev
 2. Run the app by lauching this command in your terminal
 
    ```
-   $ streamlit run streamlit_app.py
+   $ streamlit run main.py
    ```
 
 You will have those links in your terminal 
