@@ -1,99 +1,32 @@
-from api.cboe.cboe import CboeApi
-from api.barchart.barchart import BarchartApi
-from api.euronext.euronext import EuronextApi
-from api.nasdaq.nasdaq import NasdaqApi
-from api.eurex.eurex import EurexApi
-from api.nse.nse import NseApi
-from api.cme.cme import CmeApi
-from api.leonteq.leonteq import LeonteqApi
+import streamlit as st
+from sidebar import Sidebar
+from windows.home import HomePage
+from windows.dupire import Dupire
+from windows.heston import Heston
+from windows.blackscholes import BlackScholes
 
-def run_cboe_extracts():
-    """ 
-    will test each extract
-    """
-    # Initialize
-    cboe = CboeApi()
-    
-    # Test all functions by default
-    result1 = cboe.get_option_quotes()
-    result2 = cboe.get_cboe_all_tickers()
-    result3 = cboe.get_cboe_option_tickers()
-    result4 = cboe.get_cboe_future_tickers()
-    result5 = cboe.get_future_quotes()
-    result6 = cboe.get_intraday_quotes()
-    result7 = cboe.get_historical_quotes1()
-    result8 = cboe.get_historical_quotes2()
-    result9 = cboe.get_cboe_country_mapping()
-    result10 = cboe.get_resume1_indices()
-    result11 = cboe.get_resume2_indices()
-    result12 = cboe.get_implied_correlation_quotes()
-    result13 = cboe.get_last_quotes()
-    result14 = cboe.get_historical_resume()
-    
-def run_barchart_extracts():
-    """ 
-    will test each extract
-    """
-    # Initialize
-    barchart = BarchartApi()
-    # Test all functions by default
-    barchart.get_option_quotes()
 
-def run_euronext_extracts():
-    """ 
-    will test each extract
-    """
-    # Initialize
-    euronext = EuronextApi()
-    # Test all functions by default
-    euronext.get_option_quotes()
-    
-def run_nasdaq_extracts():
-    """ 
-    will test each extract
-    """
-    # Initialize
-    nasdaq = NasdaqApi()
-    # Test all functions by default
-    nasdaq.get_option_quotes()
-    
-def run_eurex_extracts():
-    """ 
-    will test each extract
-    """
-    # Initialize
-    eurex = EurexApi()
-    # Test all functions by default
-    eurex.get_all_tickers()
-    
-def run_nse_extracts():
-    """ 
-    will test each extract
-    """
-    # Initialize
-    nse = NseApi()
-    # Test all functions by default
-    nse.get_option_quotes()
-    
-def run_cme_extracts():
-    """ 
-    will test each extract
-    """
-    # Initialize
-    cme = CmeApi()
-    # Test all functions by default
-    cme.get_option_quotes()
+class Main:
+    def __init__(self):
+        self.sidebar = Sidebar()
 
-def run_leonteq_extracts():
-    """ 
-    will test each extract
-    """
-    # Initialize
-    leonteq = LeonteqApi()
-    # Test all functions by default
-    # result = leonteq.get_product_detail()
-    # result = leonteq.get_product_timeseries()
-    result = leonteq.search_products()
+    def run(self):
+        """Execute the application and display the selected page"""
+        st.set_page_config(
+            page_title="Option Analysis",
+            page_icon=":chart_with_upwards_trend:",
+        )
+        selected_page = st.navigation(self.sidebar.page)
+        if selected_page.title == "Black Scholes":
+            BlackScholes().display()
+        elif selected_page.title == "Dupire":
+            Dupire.display()
+        elif selected_page.title == "Heston":
+            Heston.display()
+        elif selected_page.title == "Home":
+            HomePage.display()
 
-if __name__ == '__main__':
-    run_leonteq_extracts()
+
+if __name__ == "__main__":
+    app = Main()
+    app.run()

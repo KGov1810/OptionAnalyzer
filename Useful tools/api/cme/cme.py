@@ -1,7 +1,6 @@
 import pandas as pd
 import requests
-from datetime import datetime
-from api.nasdaq.config import DEFAULT_HEADERS
+
 
 class BaseExtractor:
     def __init__(self, base_url=None, headers=None):
